@@ -1,15 +1,37 @@
-## Put comments here that give an overall description of what your
-## functions do
+## This is the clone of Example: Caching the Mean of a Vector but instead
+## it caches the inverse of a matrix x with solve() function
 
-## Write a short comment describing this function
 
+## The function is to create a list containing functions
+## to set/get matrix & inverse matrix
 makeCacheMatrix <- function(x = matrix()) {
-
+  c <- NULL
+  set <- function(y) {
+    x <<- y
+    c <<- NULL
+  }
+  get <- function() x
+  setcache <- function(cache) c <<- cache
+  getcache <- function() c
+  list(set = set, get = get,
+       setcache = setcache,
+       getcache = getcache)
 }
+  
 
 
-## Write a short comment describing this function
-
+## The function returns a matrix that is the inverse of 'x'. If the inverse
+## already exists in cache, it will load the data instead of recalculating the value
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  c <- x$getcache()
+  if(!is.null(c)) {
+    message("getting cached data")
+    return(c)
+  }
+  data <- x$get()
+  c <- solve(data, ...)
+  x$setcache(c)
+  c
 }
+
+
